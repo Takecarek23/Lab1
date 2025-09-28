@@ -65,7 +65,6 @@ static void MX_GPIO_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-	 int led_status1 = ON;
 	 //int led_status2 = ON;
 	 //int counter = 2; // Counter for LED2 timing
   /* USER CODE END 1 */
@@ -94,23 +93,18 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_RESET);
+  int count = 2;
   while (1)
   {
-    /* USER CODE END WHILE */
-	  // Bật đèn Đỏ (PA5) và tắt đèn Vàng (PA6)
-	  if (led_status1 == ON) {
-	    HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
-	    HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_RESET);
-	    led_status1 = OFF;
+	  HAL_Delay(1000);
+	  count --;
+	  if (count <= 0) {
+		  count = 2;
+		  HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+		  HAL_GPIO_TogglePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin);
 	  }
-	  else {
-	    // Tắt đèn Đỏ (PA5) và bật đèn Vàng (PA6)
-	    HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
-	    HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_SET);
-	    led_status1 = ON;
-	  }
-    /* USER CODE BEGIN 3 */
-	  HAL_Delay(2000); // Chờ 2 giây
   }
   /* USER CODE END 3 */
 }
